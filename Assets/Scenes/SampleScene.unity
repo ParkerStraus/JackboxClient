@@ -421,6 +421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoomCode: {fileID: 488562134}
+  InCountdown: 0
   PlayerNames:
   - {fileID: 2074670570}
   - {fileID: 1242591695}
@@ -433,6 +434,8 @@ MonoBehaviour:
   lobbyContent: <div><h1>Please wait for the game leader to start.</h1>></ div >
   lobbyContent_Admin: <div><h1>You are the game leader.</h1><br/><button data-param="0">Start
     Game</button></ div >
+  lobbyContent_AdminAbort: <div><h1>You are the game leader.</h1><br/><button data-param="0">Abort
+    Start</button></ div >
   PlayersAdded: 0
 --- !u!4 &504876971
 Transform:

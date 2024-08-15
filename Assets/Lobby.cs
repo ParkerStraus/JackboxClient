@@ -6,19 +6,30 @@ using TMPro;
 using UnityEngine;
 using static Unity.Collections.AllocatorManager;
 using UnityEngine.Windows;
+using UnityEngine.SceneManagement;
 
 public class Lobby : MonoBehaviour, IPlayerInput
 {
     public TMP_Text RoomCode;
-    public bool InCountDown;
+    public bool InCountdown = false ;
     public TMP_Text[] PlayerNames;
     [TextArea(15, 20)]
     public string lobbyContent;
     [TextArea(15, 20)]
     public string lobbyContent_Admin;
+    [TextArea(15, 20)]
+    public string lobbyContent_AdminAbort;
+
+    public Coroutine LobbyCountdownObj;
 
 
     public int PlayersAdded;
+
+    public void Start()
+    {
+
+        IPlayerObj.instance = this;
+    }
 
     public void UpdatePlayerNames(List<string> updatedNames)
     {
@@ -47,11 +58,11 @@ public class Lobby : MonoBehaviour, IPlayerInput
         {
             if(updatedPlayers[i] == 0)
             {
-                FindObjectOfType<MainGameHandler>().SendToPhone(playerNames[updatedPlayers[i]], lobbyContent_Admin);
+                MainGameHandler.instance.SendToPhone(playerNames[updatedPlayers[i]], lobbyContent_Admin);
             }
             else
             {
-                FindObjectOfType<MainGameHandler>().SendToPhone(playerNames[updatedPlayers[i]], lobbyContent);
+                MainGameHandler.instance.SendToPhone(playerNames[updatedPlayers[i]], lobbyContent);
             }
         }
     }
@@ -62,14 +73,14 @@ public class Lobby : MonoBehaviour, IPlayerInput
         // Handle the input
         if (player == 0)
         {
-            if (!InCountDown)
+            if (!InCountdown)
             {
                 // Do something specific for player 0
-                StartCoroutine(LobbyCountDown());
+                LobbyCountdownObj = StartCoroutine(LobbyCountDown());
             }
             else
             {
-                StopAllCoroutines();
+                StopCoroutine(LobbyCountdownObj);
             }
         }
     }
@@ -77,14 +88,23 @@ public class Lobby : MonoBehaviour, IPlayerInput
 
     public IEnumerator LobbyCountDown()
     {
+        //Send abort to admin
+        MainGameHandler.instance.SendToPhone(MainGameHandler.instance.Players.ToArray()[0], lobbyContent_AdminAbort);
         //3
-        yield return new WaitForSeconds(1);
+        print(3);
+        yield return new WaitForSeconds(1.2f);
         //2
+        print(2);
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.2f);
         //1
+        print(1);
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.2f);
         //Game Start
+        print("game Start");
+        MainGameHandler.instance.InLobby = false;
+        yield return new WaitForSeconds(1.2f);
+        SceneManager.LoadScene("GameScene");
     }
 }
