@@ -23,7 +23,7 @@ public class MainGameHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        webSocket = new WebSocket("ws://localhost:8080");
+        webSocket = new WebSocket("ws://54.67.79.113:8080");
         webSocket.OnOpen += (sender, e) =>
         {
             Debug.Log("WebSocket connection established.");
