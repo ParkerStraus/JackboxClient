@@ -28,8 +28,10 @@ public class MainGameHandler : MonoBehaviour
         Application.runInBackground = true;
         instance = this;
 
+        TextAsset textAsset = Resources.Load<TextAsset>("ipAddress");
 
-        webSocket = new WebSocket("ws://54.67.79.113:8080");
+
+        webSocket = new WebSocket("ws://" + ipAddress + ":8080");
         webSocket.OnOpen += (sender, e) =>
         {
             Debug.Log("WebSocket connection established.");
